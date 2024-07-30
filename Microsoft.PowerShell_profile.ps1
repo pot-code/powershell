@@ -37,6 +37,14 @@ function glog { git log --oneline --decorate --graph }
 
 function gb { git branch }
 
+function untrack {
+    git update-index --assume-unchanged @Args
+}
+
+function track {
+    git update-index --no-assume-unchanged @Args
+}
+
 function commit() {
     git commit @Args
 }
@@ -83,6 +91,34 @@ function refactor {
     }
 }
 
+function docs {
+    param(
+        [Parameter(Position = 0, Mandatory)]
+        [string]$no,
+        [string]$msg
+    )
+    if ([string]::IsNullOrEmpty($msg)) {
+        git commit -m "docs: $no"
+    }
+    else {
+        git commit -m "docs($no): $msg"
+    }
+}
+
+function chore {
+    param(
+        [Parameter(Position = 0, Mandatory)]
+        [string]$no,
+        [string]$msg
+    )
+    if ([string]::IsNullOrEmpty($msg)) {
+        git commit -m "chore: $no"
+    }
+    else {
+        git commit -m "chore($no): $msg"
+    }
+}
+
 function pi {
     $PackagesString = $args -join ' '
 
@@ -109,11 +145,6 @@ function pui {
 
 function pd { pnpm dev }
 
-# dart run build_runner
-function drb {
-    dart run build_runner build
-}
-
 function fpa {
     flutter pub add @Args
 }
@@ -122,8 +153,34 @@ function fpr {
     flutter pub remove @Args
 }
 
+function fpg {
+    Invoke-Expression "flutter pub get"
+}
+
 function fp {
     flutter pub @Args
+}
+
+function dev {
+    pnpm dev
+}
+
+function amend {
+    git commit --no-verify --amend
+}
+
+function serve {
+    param(
+        [Parameter(Position = 0, Mandatory)]
+        [string]$folder,
+        [string]$port
+    )
+    if ([string]::IsNullOrEmpty($port)) {
+        caddy file-server --root $folder --listen :3000
+    }
+    else {
+        caddy file-server --root $folder --listen $port
+    }
 }
 
 function proxy {
@@ -140,8 +197,10 @@ function unproxy {
     [System.Environment]::SetEnvironmentVariable('HTTPS_PROXY', $null)
 }
 
+
 #f45873b3-b655-43a6-b217-97c00aa0db58 PowerToys CommandNotFound module
 
 Import-Module -Name Microsoft.WinGet.CommandNotFound
 #f45873b3-b655-43a6-b217-97c00aa0db58
 
+fnm env --use-on-cd | Out-String | Invoke-Expression
