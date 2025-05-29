@@ -1,11 +1,7 @@
 # Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 
-# Import-Module posh-git
 Import-Module PSReadLine
-# Import-Module PSFzf
-# Import-Module Terminal-Icons
-# Import-Module git-aliases -DisableNameChecking
-# Invoke-Expression (&starship init powershell)
+Import-Module PSFzf
 
 # For zoxide v0.8.0+
 Invoke-Expression (& {
@@ -15,13 +11,8 @@ Invoke-Expression (& {
 
 # replace 'Ctrl+t' and 'Ctrl+r' with your preferred bindings:
 Set-PSReadlineOption -EditMode vi
-# Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r'
+Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r'
 # Set-PSReadlineKeyHandler -Chord Tab -Function MenuComplete
-
-# oh-my-posh init pwsh --config 'C:\Users\HP\Documents\PowerShell\Themes\hul10.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\HP\AppData\Local\Programs\oh-my-posh\themes\microverse-power.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\HP\AppData\Local\Programs\oh-my-posh\themes\peru.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\HP\AppData\Local\Programs\oh-my-posh\themes\sonicboom_dark.omp.json' | Invoke-Expression
 
 function state { git status }
 
@@ -33,7 +24,9 @@ function push() {
 
 function stage { git add . }
 
-function glog { git log --oneline --decorate --graph }
+function logs {
+    git log --graph --oneline --decorate --pretty=format:"%C(yellow)%h%Creset %s %C(blue)(%ad) %C(green)[%an]%Creset" --date=short
+}
 
 function gb { git branch }
 
@@ -196,11 +189,3 @@ function unproxy {
     [System.Environment]::SetEnvironmentVariable('HTTP_PROXY', $null)
     [System.Environment]::SetEnvironmentVariable('HTTPS_PROXY', $null)
 }
-
-
-#f45873b3-b655-43a6-b217-97c00aa0db58 PowerToys CommandNotFound module
-
-Import-Module -Name Microsoft.WinGet.CommandNotFound
-#f45873b3-b655-43a6-b217-97c00aa0db58
-
-fnm env --use-on-cd | Out-String | Invoke-Expression
