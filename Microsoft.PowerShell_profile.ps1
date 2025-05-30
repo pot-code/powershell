@@ -18,7 +18,7 @@ function state { git status }
 
 function pull { git pull --rebase --autostash }
 
-function push() {
+function push {
     git push @Args 
 }
 
@@ -38,78 +38,113 @@ function track {
     git update-index --no-assume-unchanged @Args
 }
 
-function commit() {
+function commit {
     git commit @Args
+}
+
+function Invoke-Better-Commit {
+    param(
+        # 提交类型，例如 feat、fix
+        [Parameter(Position = 0, Mandatory)]
+        [string]
+        $type,
+
+        # 提交 scope 或信息（如果没有提供第三个参数）
+        [Parameter(Position = 1, Mandatory)]
+        [string]
+        $scope,
+
+        # 提交信息，对应 subject，如果没有提供则默认为 scope
+        [Parameter(Position = 2)]
+        [string]
+        $msg
+    )
+    if ([string]::IsNullOrEmpty($msg)) {
+        git commit -m "${type}: $scope"
+    }
+    else {
+        git commit -m "${type}($scope): $msg"
+    }
 }
 
 function fix {
     param(
-        [Parameter(Position = 0, Mandatory)]
-        [string]$no,
-        [string]$msg
+        # 提交 scope 或信息（如果没有提供第三个参数）
+        [Parameter(Position = 1, Mandatory)]
+        [string]
+        $scope,
+
+        # 提交信息，对应 subject，如果没有提供则默认为 scope
+        [Parameter(Position = 2)]
+        [string]
+        $msg
     )
-    if ([string]::IsNullOrEmpty($msg)) {
-        git commit -m "fix: $no"
-    }
-    else {
-        git commit -m "fix($no): $msg"
-    }
+
+    Invoke-Better-Commit "fix" $scope $msg
 }
 
 function feat {
     param(
-        [Parameter(Position = 0, Mandatory)]
-        [string]$no,
-        [string]$msg
+        # 提交 scope 或信息（如果没有提供第三个参数）
+        [Parameter(Position = 1, Mandatory)]
+        [string]
+        $scope,
+
+        # 提交信息，对应 subject，如果没有提供则默认为 scope
+        [Parameter(Position = 2)]
+        [string]
+        $msg
     )
-    if ([string]::IsNullOrEmpty($msg)) {
-        git commit -m "feat: $no"
-    }
-    else {
-        git commit -m "feat($no): $msg"
-    }
+
+    Invoke-Better-Commit "feat" $scope $msg
 }
 
 function refactor {
     param(
-        [Parameter(Position = 0, Mandatory)]
-        [string]$no,
-        [string]$msg
+        # 提交 scope 或信息（如果没有提供第三个参数）
+        [Parameter(Position = 1, Mandatory)]
+        [string]
+        $scope,
+
+        # 提交信息，对应 subject，如果没有提供则默认为 scope
+        [Parameter(Position = 2)]
+        [string]
+        $msg
     )
-    if ([string]::IsNullOrEmpty($msg)) {
-        git commit -m "refactor: $no"
-    }
-    else {
-        git commit -m "refactor($no): $msg"
-    }
+
+    Invoke-Better-Commit "refactor" $scope $msg
 }
 
 function docs {
     param(
-        [Parameter(Position = 0, Mandatory)]
-        [string]$no,
-        [string]$msg
+        # 提交 scope 或信息（如果没有提供第三个参数）
+        [Parameter(Position = 1, Mandatory)]
+        [string]
+        $scope,
+
+        # 提交信息，对应 subject，如果没有提供则默认为 scope
+        [Parameter(Position = 2)]
+        [string]
+        $msg
     )
-    if ([string]::IsNullOrEmpty($msg)) {
-        git commit -m "docs: $no"
-    }
-    else {
-        git commit -m "docs($no): $msg"
-    }
+
+    Invoke-Better-Commit "refactor" $scope $msg
 }
 
 function chore {
     param(
-        [Parameter(Position = 0, Mandatory)]
-        [string]$no,
-        [string]$msg
+        # 提交 scope 或信息（如果没有提供第三个参数）
+        [Parameter(Position = 1, Mandatory)]
+        [string]
+        $scope,
+
+        # 提交信息，对应 subject，如果没有提供则默认为 scope
+        [Parameter(Position = 2)]
+        [string]
+        $msg
     )
-    if ([string]::IsNullOrEmpty($msg)) {
-        git commit -m "chore: $no"
-    }
-    else {
-        git commit -m "chore($no): $msg"
-    }
+
+    Invoke-Better-Commit "chore" $scope $msg
 }
 
 function pi {
