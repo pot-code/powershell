@@ -1,3 +1,5 @@
+# 删除最近 100 条历史命令之前的所有历史命令
+
 # 定义历史文件路径
 $historyPath = "$env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt"
 
