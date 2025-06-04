@@ -123,3 +123,19 @@ function chore {
 
 
 function amend { git commit --no-verify --amend }
+
+function bb {
+  param(
+    # 迭代版本
+    [Parameter(Position = 1, Mandatory)]
+    [string]
+    $version,
+
+    # gitee issue id
+    [Parameter(Position = 0, Mandatory)]
+    [string]
+    $id
+  )
+
+  git checkout -b "bugfix/$version/$id"
+}
