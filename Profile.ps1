@@ -1,5 +1,4 @@
 Import-Module PSReadLine
-Import-Module PSFzf
 
 Import-Module GitTools
 Import-Module SystemTools
@@ -13,4 +12,3 @@ Invoke-Expression (& {
 
 # replace 'Ctrl+t' and 'Ctrl+r' with your preferred bindings:
 Set-PSReadlineOption -EditMode vi
-Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r'
